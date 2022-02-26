@@ -72,21 +72,34 @@ public class BankAccount {
     //class string output
     public String toString() {
         return "AccountID : " + accountID + "\n" +
-                "First Name : " + firstName + "\n" +
-                "Last Name : " + lastName + "\n" +
-                "Balance : " + balance + "\n" +
+               "First Name : " + firstName + "\n" +
+               "Last Name : " + lastName + "\n" +
+               "Opening Date : " + openingDate + "\n" +
+               "Balance : " + balance + "\n" +
                "Email : " + email;
     }
 
     //class methods
     public void depositBalance(double balance) {
         this.balance += balance;
+        if(balance >= 100000)
+            additionalDeposit(balance);
         ++depositeCount;
     }
 
     public void withdrawBalance(double balance) {
         this.balance -= balance;
+        if(this.balance < 50000)
+            taxDeduction();
         ++withdrawCount;
+    }
+
+    private void additionalDeposit(double balance) {
+        this.balance += 0.01 * balance; // additional 1% deposit
+    }
+
+    private void taxDeduction() {
+        balance -= 0.02 * balance; // 2% tax deduction
     }
 
     public String states() {

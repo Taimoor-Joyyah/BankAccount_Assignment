@@ -18,9 +18,6 @@ public class BankAccountTest {
 
         BankAccount account1 = new BankAccount(firstName, lastName, new Date(2, 2, 2022), balance);
 
-        //BankAccount account1 = new BankAccount("Taimoor", "Joyyah", 1500);
-
-
         System.out.println("MENU");
         System.out.println("Press 1: To Deposit an amount\n" +
                            "Press 2: To Withdraw an amount\n" +
@@ -36,7 +33,19 @@ public class BankAccountTest {
                     break;
                 case 2:
                     System.out.print("Enter the amount you want to withdraw from your account > ");
-                    account1.withdrawBalance(read.nextDouble());
+                    double withdrawAmount = read.nextDouble();
+                    if((account1.getBalance() - withdrawAmount) < 50000) {
+                        System.out.println("Are you sure you want to withdraw, " +
+                                           "it would make your balance below 50,000. " +
+                                           "Press 1 to continue and 0 to abort");
+                        switch(read.nextByte()) {
+                            case 1:
+                                account1.withdrawBalance(withdrawAmount);
+                                break;
+                            case 0:
+                                break;
+                        }
+                    }
                     break;
                 case 3:
                     System.out.println("Your current Balance is " + account1.getBalance());
