@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class BankAccountTest {
@@ -5,18 +6,29 @@ public class BankAccountTest {
         String firstName;
         String lastName;
         double balance;
+        boolean smsAlert;
+        boolean debitCard;
+
+        LocalDate today = LocalDate.now();
 
         Scanner read = new Scanner(System.in);
 
         System.out.println("ACCOUNT OPENING DETAIL");
-        System.out.print("First Name : ");
+        System.out.print("Enter your first name : ");
         firstName = read.nextLine();
-        System.out.print("Last Name : ");
+        System.out.print("Enter your last name : ");
         lastName = read.nextLine();
-        System.out.print("Balance : ");
+        System.out.print("Enter Opening Balance : ");
         balance = read.nextDouble();
+        System.out.print("Do you want SMS Alert? (true or false) : ");
+        smsAlert = read.nextBoolean();
+        System.out.print("Do you want Debit Card? (true or false) : ");
+        debitCard = read.nextBoolean();
 
-        BankAccount account1 = new BankAccount(firstName, lastName, new Date(2, 2, 2022), balance);
+
+        BankAccount account = new BankAccount(firstName, lastName,
+                new Date(today.getDayOfMonth(), today.getMonthValue(), today.getYear()),
+                balance, smsAlert, debitCard);
 
         System.out.println("MENU");
         System.out.println("Press 1: To Deposit an amount\n" +
@@ -29,32 +41,37 @@ public class BankAccountTest {
             switch (read.nextByte()) {
                 case 1:
                     System.out.print("Enter the amount you want to deposit in your account > ");
-                    account1.depositBalance(read.nextDouble());
+                    account.depositBalance(read.nextDouble());
                     break;
                 case 2:
                     System.out.print("Enter the amount you want to withdraw from your account > ");
                     double withdrawAmount = read.nextDouble();
-                    if((account1.getBalance() - withdrawAmount) < 50000) {
+                    if((account.getBalance() - withdrawAmount) < 50000) {
                         System.out.println("Are you sure you want to withdraw, " +
                                            "it would make your balance below 50,000. " +
                                            "Press 1 to continue and 0 to abort");
-                        switch(read.nextByte()) {
-                            case 1:
-                                account1.withdrawBalance(withdrawAmount);
-                                break;
-                            case 0:
-                                break;
-                        }
+                        System.out.print("Option : ");
+                        if(read.nextByte() == 1)
+                            account.withdrawBalance(withdrawAmount);
                     }
                     break;
                 case 3:
-                    System.out.println("Your current Balance is " + account1.getBalance());
+                    System.out.println("Your current Balance is " + account.getBalance());
                     break;
                 case 4:
-                    System.out.println(account1.states());
+                    System.out.println(account.states());
                     System.exit(0);
                 default:
                     System.out.println("Invalid Option...");
+            }
+            if((account.getLastAnnualDeduction() != today.getYear()) && (today.getDayOfMonth() == 31) &&
+               (today.getMonthValue() == 12)) {
+                System.out.println(account);
+                if(account.accountType().equals("STANDARD")) {
+                    account.annualDeduction();
+                    System.out.println("Your Account Balance : " + account.getBalance());
+                }
+                account.setLastAnnualDeduction(today.getYear());
             }
         }
     }

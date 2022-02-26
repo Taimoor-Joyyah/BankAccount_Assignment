@@ -1,20 +1,23 @@
 public class BankAccount {
-
     //class private attributes
     private String firstName;
     private String lastName;
     private String email;
     private Date openingDate;
-    private final int accountID;
+    private int accountID;
     private double balance;
     private int depositeCount;
     private int withdrawCount;
+    private boolean smsAlert;
+    private boolean debitCard;
+    private int lastAnnualDeduction = 0;
 
     //class static
     private static int counter;
 
     //class constructors
-    public BankAccount(String firstName, String lastName, Date openingDate, double balance, String email) {
+    public BankAccount(String firstName, String lastName, Date openingDate, double balance,
+                       String email, boolean smsAlert, boolean debitCard) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.openingDate = openingDate;
@@ -24,8 +27,9 @@ public class BankAccount {
         ++counter;
     }
 
-    public BankAccount(String firstName, String lastName, Date openingDate, double balance) {
-        this(firstName, lastName, openingDate, balance, "No Email Provided");
+    public BankAccount(String firstName, String lastName, Date openingDate, double balance,
+                       boolean smsAlert, boolean debitCard) {
+        this(firstName, lastName, openingDate, balance, "No Email Provided", smsAlert, debitCard);
     }
 
     //class getter & setter
@@ -69,6 +73,38 @@ public class BankAccount {
         return openingDate;
     }
 
+    public boolean isSmsAlert() {
+        return smsAlert;
+    }
+
+    public void setSmsAlert(boolean smsAlert) {
+        this.smsAlert = smsAlert;
+    }
+
+    public boolean isDebitCard() {
+        return debitCard;
+    }
+
+    public void setDebitCard(boolean debitCard) {
+        this.debitCard = debitCard;
+    }
+
+    public int getDepositeCount() {
+        return depositeCount;
+    }
+
+    public int getWithdrawCount() {
+        return withdrawCount;
+    }
+
+    public int getLastAnnualDeduction() {
+        return lastAnnualDeduction;
+    }
+
+    public void setLastAnnualDeduction(int lastAnnualDeduction) {
+        this.lastAnnualDeduction = lastAnnualDeduction;
+    }
+
     //class string output
     public String toString() {
         return "AccountID : " + accountID + "\n" +
@@ -76,22 +112,41 @@ public class BankAccount {
                "Last Name : " + lastName + "\n" +
                "Opening Date : " + openingDate + "\n" +
                "Balance : " + balance + "\n" +
-               "Email : " + email;
+               "Email : " + email + "\n" +
+               "Account Type : " + accountType() +
+               "SMS Alert Subscribed : " + smsAlert + "\n" +
+               "Debit Card Subscribed : " + debitCard + "\n" +
+               "Deposit Count : " + depositeCount + "\n" +
+               "Withdraw Count : " + withdrawCount;
     }
 
     //class methods
     public void depositBalance(double balance) {
         this.balance += balance;
-        if(balance >= 100000)
+        if (balance >= 100000)
             additionalDeposit(balance);
         ++depositeCount;
     }
 
     public void withdrawBalance(double balance) {
         this.balance -= balance;
-        if(this.balance < 50000)
+        if (this.balance < 50000)
             taxDeduction();
         ++withdrawCount;
+    }
+
+    public void annualDeduction() {
+        if (smsAlert)
+            smsAlertDeduction();
+        if (debitCard)
+            debitCardDeduction();
+    }
+
+    public String states() {
+        return "Account Title : " + firstName + " " + lastName + "\n" +
+               "Total deposits : " + depositeCount + "\n" +
+               "Total withdraws : " + withdrawCount + "\n" +
+               "Balance : " + balance;
     }
 
     private void additionalDeposit(double balance) {
@@ -102,10 +157,18 @@ public class BankAccount {
         balance -= 0.02 * balance; // 2% tax deduction
     }
 
-    public String states() {
-        return "Account Title : " + firstName + " " + lastName + "\n" +
-               "Total deposits : " + depositeCount + "\n" +
-               "Total withdraws : " + withdrawCount + "\n" +
-               "Balance : " + balance;
+    private void smsAlertDeduction() {
+        balance -= 2000;
+    }
+
+    private void debitCardDeduction() {
+        balance -= 5000;
+    }
+
+    public String accountType() {
+        if (balance >= 3000000)
+            return "PREMIUM";
+        else
+            return "STANDARD";
     }
 }
