@@ -3,16 +3,32 @@ public class BankAccount {
     //class private attributes
     private String firstName;
     private String lastName;
+    private String email;
+    private final int accountID;
     private double balance;
 
+    //class static
+    private static int counter;
+
     //class constructors
-    public BankAccount(String firstName, String lastName, double balance) {
+    public BankAccount(String firstName, String lastName, double balance, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.balance = balance;
+        this.email = email;
+        accountID = counter;
+        ++counter;
+    }
+
+    public BankAccount(String firstName, String lastName, double balance) {
+        this(firstName, lastName, balance, "No Email Provided");
     }
 
     //class getter & setter
+    public int getAccountID() {
+        return accountID;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -37,10 +53,18 @@ public class BankAccount {
         this.balance = balance;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     //class string output
     public String toString() {
-        return "First Name : " + firstName + "%n" +
-                "Last Name : " + lastName + "%n" +
+        return "First Name : " + firstName + "\n" +
+                "Last Name : " + lastName + "\n" +
                 "Balance : " + balance;
     }
 
