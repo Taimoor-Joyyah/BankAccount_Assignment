@@ -4,24 +4,28 @@ public class BankAccount {
     private String firstName;
     private String lastName;
     private String email;
+    private Date openingDate;
     private final int accountID;
     private double balance;
+    private int depositeCount;
+    private int withdrawCount;
 
     //class static
     private static int counter;
 
     //class constructors
-    public BankAccount(String firstName, String lastName, double balance, String email) {
+    public BankAccount(String firstName, String lastName, Date openingDate, double balance, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.openingDate = openingDate;
         this.balance = balance;
         this.email = email;
         accountID = counter;
         ++counter;
     }
 
-    public BankAccount(String firstName, String lastName, double balance) {
-        this(firstName, lastName, balance, "No Email Provided");
+    public BankAccount(String firstName, String lastName, Date openingDate, double balance) {
+        this(firstName, lastName, openingDate, balance, "No Email Provided");
     }
 
     //class getter & setter
@@ -61,6 +65,10 @@ public class BankAccount {
         this.email = email;
     }
 
+    public Date getOpeningDate() {
+        return openingDate;
+    }
+
     //class string output
     public String toString() {
         return "AccountID : " + accountID + "\n" +
@@ -73,9 +81,18 @@ public class BankAccount {
     //class methods
     public void depositBalance(double balance) {
         this.balance += balance;
+        ++depositeCount;
     }
 
     public void withdrawBalance(double balance) {
         this.balance -= balance;
+        ++withdrawCount;
+    }
+
+    public String states() {
+        return "Account Title : " + firstName + " " + lastName + "\n" +
+               "Total deposits : " + depositeCount + "\n" +
+               "Total withdraws : " + withdrawCount + "\n" +
+               "Balance : " + balance;
     }
 }

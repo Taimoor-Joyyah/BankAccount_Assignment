@@ -16,7 +16,7 @@ public class BankAccountTest {
         System.out.print("Balance : ");
         balance = read.nextDouble();
 
-        BankAccount account1 = new BankAccount(firstName, lastName, balance);
+        BankAccount account1 = new BankAccount(firstName, lastName, new Date(2, 2, 2022), balance);
 
         //BankAccount account1 = new BankAccount("Taimoor", "Joyyah", 1500);
 
@@ -31,7 +31,7 @@ public class BankAccountTest {
             System.out.print("Option : ");
             switch (read.nextByte()) {
                 case 1:
-                    System.out.print("Enter the amount you want to desposit in your account > ");
+                    System.out.print("Enter the amount you want to deposit in your account > ");
                     account1.depositBalance(read.nextDouble());
                     break;
                 case 2:
@@ -42,7 +42,7 @@ public class BankAccountTest {
                     System.out.println("Your current Balance is " + account1.getBalance());
                     break;
                 case 4:
-                    System.out.print("Exiting...");
+                    System.out.println(account1.states());
                     System.exit(0);
                 default:
                     System.out.println("Invalid Option...");
