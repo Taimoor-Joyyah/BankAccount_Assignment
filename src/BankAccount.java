@@ -21,7 +21,8 @@ public class BankAccount {
         this.firstName = firstName;
         this.lastName = lastName;
         this.openingDate = openingDate;
-        this.balance = balance;
+        if(balance >= 0)
+            this.balance = balance;
         this.email = email;
         accountID = counter;
         ++counter;
@@ -58,6 +59,7 @@ public class BankAccount {
     }
 
     public void setBalance(double balance) {
+        if(balance >= 0)
         this.balance = balance;
     }
 
@@ -129,10 +131,12 @@ public class BankAccount {
     }
 
     public void withdrawBalance(double balance) {
-        this.balance -= balance;
-        if (this.balance < 50000)
-            taxDeduction();
-        ++withdrawCount;
+        if((this.balance - balance) >= 0) {
+            this.balance -= balance;
+            if (this.balance < 50000)
+                taxDeduction();
+            ++withdrawCount;
+        }
     }
 
     public void annualDeduction() {

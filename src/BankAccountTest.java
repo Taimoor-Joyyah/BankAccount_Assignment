@@ -67,7 +67,7 @@ public class BankAccountTest {
             if((account.getLastAnnualDeduction() != today.getYear()) && (today.getDayOfMonth() == 31) &&
                (today.getMonthValue() == 12)) {
                 System.out.println(account);
-                if(account.accountType().equals("STANDARD")) {
+                if(!account.accountType().equals("PREMIUM")) {
                     account.annualDeduction();
                     System.out.println("Your Account Balance : " + account.getBalance());
                 }
