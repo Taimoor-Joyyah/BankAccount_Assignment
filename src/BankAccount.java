@@ -63,9 +63,11 @@ public class BankAccount {
 
     //class string output
     public String toString() {
-        return "First Name : " + firstName + "\n" +
+        return "AccountID : " + accountID + "\n" +
+                "First Name : " + firstName + "\n" +
                 "Last Name : " + lastName + "\n" +
-                "Balance : " + balance;
+                "Balance : " + balance + "\n" +
+               "Email : " + email;
     }
 
     //class methods
